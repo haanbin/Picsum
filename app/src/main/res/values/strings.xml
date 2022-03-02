@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Picsum</string>
+    <string name="splash">SPLASH</string>
+    <string name="images">Images</string>
+</resources>
