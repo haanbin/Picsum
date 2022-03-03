@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="kotlin.jvm.functions.Function0" />
+
+        <variable
+            name="progressVisible"
+            type="Boolean" />
+
+        <variable
+            name="retryVisible"
+            type="Boolean" />
+
+        <variable
+            name="retry"
+            type="Function0" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{progressVisible ? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:onClick="@{() -> retry.invoke()}"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="@string/retry"
+            android:textColor="@color/white"
+            android:visibility="@{retryVisible ? View.VISIBLE : View.GONE}" />
+
+    </LinearLayout>
+</layout>
