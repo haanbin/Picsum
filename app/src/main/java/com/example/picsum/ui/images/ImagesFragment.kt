@@ -6,18 +6,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.picsum.R
 import com.example.picsum.base.BaseFragment
 import com.example.picsum.databinding.FragmentImagesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_images) {
@@ -37,12 +35,23 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
                     animator.supportsChangeAnimations = false
                 }
             }
-            adapter = imagesAdapter.withLoadStateHeaderAndFooter(
-                header = LoadStateAdapter { imagesAdapter.retry() },
-                footer = LoadStateAdapter { imagesAdapter.retry() }
+            val footerAdapter = LoadStateAdapter { imagesAdapter.retry() }
+            adapter = imagesAdapter.withLoadStateFooter(
+                footer = footerAdapter
             )
+            layoutManager = GridLayoutManager(requireContext(), 3).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (position == imagesAdapter.itemCount && footerAdapter.itemCount > 0) {
+                            3
+                        } else {
+                            1
+                        }
+                    }
+                }
+            }
         }
-        addLoadStateAdapter()
+        initAdapter()
         searchImages()
         viewModel.refreshEvent.asLiveData().observe(viewLifecycleOwner, {
             searchImages(true)
@@ -61,7 +70,7 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
         }
     }
 
-    private fun addLoadStateAdapter() {
+    private fun initAdapter() {
         imagesAdapter.addLoadStateListener { loadState ->
             val emptyVisible =
                 loadState.refresh is LoadState.NotLoading && imagesAdapter.itemCount == 0
