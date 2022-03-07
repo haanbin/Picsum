@@ -1,24 +1,36 @@
 package com.example.picsum.data
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
+import com.example.picsum.data.local.RoomDataSource
+import com.example.picsum.data.local.db.entity.toVo
 import com.example.picsum.data.paging.ImagesPagingSource
 import com.example.picsum.data.paging.ImagesPagingSource.Companion.LIMIT_DEFAULT
 import com.example.picsum.data.remote.PicsumDataSource
 import com.example.picsum.data.vo.Image
+import com.example.picsum.ui.images.ImageRemoteMediator
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PicsumRepositoryImpl @Inject constructor(private val picsumDataSource: PicsumDataSource) :
-    PicsumRepository {
+class PicsumRepositoryImpl @Inject constructor(
+    private val picsumDataSource: PicsumDataSource,
+    private val roomDataSource: RoomDataSource
+) : PicsumRepository {
 
     override fun getImages(): Flow<PagingData<Image>> {
+        val pagingSourceFactory = { roomDataSource.getImages() }
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
-            config = PagingConfig(pageSize = LIMIT_DEFAULT, enablePlaceholders = false),
-            pagingSourceFactory = { ImagesPagingSource(picsumDataSource) }
-        ).flow
+            config = PagingConfig(pageSize = LIMIT_DEFAULT, enablePlaceholders = true),
+            remoteMediator = ImageRemoteMediator(picsumDataSource, roomDataSource),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow.map {
+            it.map { imageEntity ->
+                imageEntity.toVo()
+            }
+        }
     }
 }
+

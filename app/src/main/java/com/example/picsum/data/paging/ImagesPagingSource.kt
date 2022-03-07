@@ -48,6 +48,6 @@ class ImagesPagingSource(
 
     companion object {
         const val PAGE_DEFAULT = 1
-        const val LIMIT_DEFAULT = 30
+        const val LIMIT_DEFAULT = 100
     }
 }

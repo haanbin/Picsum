@@ -15,7 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_images) {
@@ -27,14 +26,8 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
-
         binding.rvImages.run {
             adapter = imagesAdapter
-            itemAnimator?.let { animator ->
-                if (animator is SimpleItemAnimator) {
-                    animator.supportsChangeAnimations = false
-                }
-            }
             val footerAdapter = LoadStateAdapter { imagesAdapter.retry() }
             adapter = imagesAdapter.withLoadStateFooter(
                 footer = footerAdapter
@@ -51,19 +44,21 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
                 }
             }
         }
-        initAdapter()
-        searchImages()
+
         viewModel.refreshEvent.asLiveData().observe(viewLifecycleOwner, {
             searchImages(true)
         })
         viewModel.retryEvent.asLiveData().observe(viewLifecycleOwner, {
             imagesAdapter.retry()
         })
+
+        initAdapter()
+        searchImages()
     }
 
     private fun searchImages(isRefresh: Boolean = false) {
         searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
+        searchJob = viewLifecycleOwner.lifecycleScope.launch {
             viewModel.searchImages(isRefresh).collectLatest {
                 imagesAdapter.submitData(it)
             }
@@ -74,9 +69,11 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
         imagesAdapter.addLoadStateListener { loadState ->
             val emptyVisible =
                 loadState.refresh is LoadState.NotLoading && imagesAdapter.itemCount == 0
-            val listVisible = loadState.source.refresh is LoadState.NotLoading
-            val progressVisible = loadState.source.refresh is LoadState.Loading
-            val retryVisible = loadState.source.refresh is LoadState.Error
+            val listVisible =
+                loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
+            val progressVisible = loadState.mediator?.refresh is LoadState.Loading
+            val retryVisible =
+                loadState.mediator?.refresh is LoadState.Error && imagesAdapter.itemCount == 0
             viewModel.addLoadStateListener(emptyVisible, listVisible, progressVisible, retryVisible)
         }
     }

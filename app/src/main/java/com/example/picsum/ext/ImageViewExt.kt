@@ -74,9 +74,9 @@ fun ImageView.loadPhotoDetail(
         .into(this)
 }
 
-@BindingAdapter("bind:likeCount")
-fun ImageView.setLikeCount(likeCount: Int) {
-    isSelected = likeCount != 0
+@BindingAdapter("bind:like")
+fun ImageView.setLike(isLike: Boolean) {
+    isSelected = isLike
 }
 
 @BindingAdapter("bind:bitmapImage")

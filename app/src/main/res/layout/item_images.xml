@@ -41,6 +41,6 @@
             android:src="@drawable/selector_list_like"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:likeCount="@{item.likeCount}" />
+            android:selected="@{item.like}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

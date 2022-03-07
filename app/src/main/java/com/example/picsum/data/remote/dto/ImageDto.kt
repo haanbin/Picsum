@@ -1,5 +1,6 @@
 package com.example.picsum.data.remote.dto
 
+import com.example.picsum.data.local.db.entity.ImageEntity
 import com.example.picsum.data.vo.Image
 import com.google.gson.annotations.SerializedName
 
@@ -27,16 +28,14 @@ fun List<ImageDto>.toVo(grayscale: Boolean = false, blur: Int = 0): List<Image> 
             it.width,
             grayscale,
             blur,
-            0
+            false,
+            0L
         )
     }
-/*
-fun List<PhotoDto>.toEntity(start: Int): List<PhotoEntity> {
-    var index = start
+
+fun List<ImageDto>.toEntity(): List<ImageEntity> {
     return map {
-        index++
-        PhotoEntity(
-            index,
+        ImageEntity(
             it.id,
             it.author,
             it.downloadUrl,
@@ -45,7 +44,8 @@ fun List<PhotoDto>.toEntity(start: Int): List<PhotoEntity> {
             it.width,
             false,
             0,
+            false,
             System.currentTimeMillis()
         )
     }
-}*/
+}

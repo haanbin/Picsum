@@ -13,7 +13,8 @@ data class Image(
     val width: Int,
     var grayScale: Boolean = false,
     var blur: Int = 0,
-    var likeCount: Int
+    var isLike: Boolean,
+    val tableId: Long
 ) : Parcelable
 
 /*fun Photo.toLikeEntity() =
