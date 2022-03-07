@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -56,7 +57,13 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
         viewModel.retryEvent.asLiveData().observe(viewLifecycleOwner, {
             imagesAdapter.retry()
         })
-
+        viewModel.navImageEvent.asLiveData().observe(viewLifecycleOwner, {
+            findNavController().navigate(
+                ImagesFragmentDirections.actionImagesFragmentToImageFragment(
+                    it
+                )
+            )
+        })
         initAdapter()
         searchImages()
     }

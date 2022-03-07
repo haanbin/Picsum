@@ -1,6 +1,5 @@
 package com.example.picsum.ext
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -15,25 +14,27 @@ import com.example.picsum.R
 import com.example.picsum.data.vo.Image
 
 @BindingAdapter("bind:loadImage")
-fun ImageView.loadImage(image: Image) {
-    val deviceWidth = (context.resources.displayMetrics.widthPixels)
-    val size = (deviceWidth) / 4
-    val imageUrl = (BuildConfig.SERVER_URL + "id/" + image.id + "/$size/$size")
-    Glide.with(this).load(imageUrl)
-        .apply(
-            RequestOptions().placeholder(R.drawable.ic_no_image)
-                .error(R.drawable.ic_no_image)
-                .override(size)
-        )
-        .into(this)
+fun ImageView.loadImage(image: Image?) {
+    image?.let {
+        val deviceWidth = (context.resources.displayMetrics.widthPixels)
+        val size = (deviceWidth) / 4
+        val imageUrl = (BuildConfig.SERVER_URL + "id/" + image.id + "/$size/$size")
+        Glide.with(this).load(imageUrl)
+            .apply(
+                RequestOptions().placeholder(R.drawable.ic_no_image)
+                    .error(R.drawable.ic_no_image)
+                    .override(size)
+            )
+            .into(this)
+    }
 }
 
 @BindingAdapter(
-    "bind:loadPhotoDetail",
+    "bind:loadImageDetail",
     "bind:onResourceReady",
     "bind:onLoadFailed"
 )
-fun ImageView.loadPhotoDetail(
+fun ImageView.loadImageDetail(
     image: Image,
     onResourceReady: () -> Unit,
     onLoadFailed: () -> Unit
@@ -72,16 +73,4 @@ fun ImageView.loadPhotoDetail(
             }
         })
         .into(this)
-}
-
-@BindingAdapter("bind:like")
-fun ImageView.setLike(isLike: Boolean) {
-    isSelected = isLike
-}
-
-@BindingAdapter("bind:bitmapImage")
-fun ImageView.setRandomBitmapImage(bitmap: Bitmap?) {
-    bitmap?.let {
-        setImageBitmap(bitmap)
-    }
 }

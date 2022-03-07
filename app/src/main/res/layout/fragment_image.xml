@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.example.picsum.ui.image.ImageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_alpha_90">
+
+        <View
+            android:id="@+id/v_top"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/title_height"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{() -> vm.onClickBackImage()}"
+            android:src="@drawable/ic_back_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/v_top"
+            app:layout_constraintStart_toStartOf="@id/v_top"
+            app:layout_constraintTop_toTopOf="@id/v_top" />
+
+        <TextView
+            android:id="@+id/tv_photo_author"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@{vm.image.author}"
+            android:textSize="@dimen/title_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/v_top"
+            app:layout_constraintEnd_toStartOf="@id/iv_like"
+            app:layout_constraintStart_toEndOf="@id/iv_back_arrow"
+            app:layout_constraintTop_toTopOf="@id/v_top"
+            tools:text="AuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthorAuthor" />
+
+        <ImageView
+            android:id="@+id/iv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{() -> vm.onClickLike()}"
+            android:paddingHorizontal="5dp"
+            android:selected="@{vm.image.like}"
+            android:src="@drawable/selector_like"
+            app:layout_constraintBottom_toBottomOf="@id/v_top"
+            app:layout_constraintEnd_toStartOf="@id/iv_more"
+            app:layout_constraintTop_toTopOf="@id/v_top" />
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{() -> vm.onClickMore()}"
+            android:paddingHorizontal="5dp"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="@id/v_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/v_top" />
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:paddingVertical="@dimen/default_padding_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_top"
+            bind:loadImageDetail="@{vm.image}"
+            bind:onLoadFailed="@{vm.onLoadFailed}"
+            bind:onResourceReady="@{vm.onResourceReady}"
+            tools:src="@drawable/ic_no_image" />
+
+        <TextView
+            android:id="@+id/tv_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="@{vm.loadingVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+            app:layout_constraintEnd_toEndOf="@id/iv_photo"
+            app:layout_constraintStart_toStartOf="@id/iv_photo"
+            app:layout_constraintTop_toTopOf="@id/iv_photo" />
+
+        <TextView
+            android:id="@+id/tv_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/load_image_failed"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="@{vm.failedVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+            app:layout_constraintEnd_toEndOf="@id/iv_photo"
+            app:layout_constraintStart_toStartOf="@id/iv_photo"
+            app:layout_constraintTop_toTopOf="@id/iv_photo" />
+
+        <TextView
+            android:id="@+id/tv_failed_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_retry"
+            android:onClick="@{() -> vm.onClickRetry()}"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="@dimen/default_padding_vertical"
+            android:text="@string/retry"
+            android:textColor="@color/white"
+            android:visibility="@{vm.failedVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@id/tv_failed"
+            app:layout_constraintStart_toStartOf="@id/tv_failed"
+            app:layout_constraintTop_toBottomOf="@id/tv_failed" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

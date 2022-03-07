@@ -16,8 +16,7 @@ import javax.inject.Inject
 class ImagesViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase,
     private val updateImageUseCase: UpdateImageUseCase
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
 
     private val _refreshVisible = MutableStateFlow(false)
     val refreshVisible = _refreshVisible.asStateFlow()
@@ -40,14 +39,18 @@ class ImagesViewModel @Inject constructor(
     private val _retryEvent = MutableSharedFlow<Unit>()
     val retryEvent = _retryEvent.asSharedFlow()
 
-    val images: Flow<PagingData<Image>>? = null
+    private val _navImageEvent = MutableSharedFlow<Image>()
+    val navImageEvent = _navImageEvent.asSharedFlow()
+
+    var images: Flow<PagingData<Image>> = getImagesUseCase().cachedIn(viewModelScope)
 
     fun searchImages(isRefresh: Boolean = false): Flow<PagingData<Image>> {
-        if (images != null && !isRefresh) {
+        if (!isRefresh) {
             return images
         }
         _refreshVisible.value = false
-        return getImagesUseCase().cachedIn(viewModelScope)
+        images = getImagesUseCase().cachedIn(viewModelScope)
+        return images
     }
 
     fun onRefresh() {
@@ -78,6 +81,12 @@ class ImagesViewModel @Inject constructor(
     fun updateImage(image: Image) {
         viewModelScope.launch {
             updateImageUseCase(imageId = image.id, !image.isLike)
+        }
+    }
+
+    fun goNavImageEvent(image: Image) {
+        viewModelScope.launch {
+            _navImageEvent.emit(image.copy())
         }
     }
 }
