@@ -37,10 +37,11 @@
             android:id="@+id/iv_like"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:onClick="@{() -> listener.updateImage(item)}"
             android:padding="5dp"
+            android:selected="@{item.like}"
             android:src="@drawable/selector_list_like"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:selected="@{item.like}" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

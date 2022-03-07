@@ -6,13 +6,17 @@ import androidx.paging.cachedIn
 import com.example.picsum.base.BaseViewModel
 import com.example.picsum.data.vo.Image
 import com.example.picsum.domain.GetImagesUseCase
+import com.example.picsum.domain.UpdateImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ImagesViewModel @Inject constructor(private val getImagesUseCase: GetImagesUseCase) :
+class ImagesViewModel @Inject constructor(
+    private val getImagesUseCase: GetImagesUseCase,
+    private val updateImageUseCase: UpdateImageUseCase
+) :
     BaseViewModel() {
 
     private val _refreshVisible = MutableStateFlow(false)
@@ -69,5 +73,11 @@ class ImagesViewModel @Inject constructor(private val getImagesUseCase: GetImage
         _listVisible.value = listVisible
         _loadingVisible.value = progressVisible
         _retryVisible.value = retryVisible
+    }
+
+    fun updateImage(image: Image) {
+        viewModelScope.launch {
+            updateImageUseCase(imageId = image.id, !image.isLike)
+        }
     }
 }

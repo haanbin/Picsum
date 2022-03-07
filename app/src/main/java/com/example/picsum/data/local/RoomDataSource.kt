@@ -21,4 +21,6 @@ interface RoomDataSource {
     suspend fun getRemoteKeysImageId(imageId: Long): ImageRemoteKeysEntity?
 
     suspend fun removeRemoteKeys()
+
+    suspend fun updateImage(imageId: String, isLike: Boolean)
 }

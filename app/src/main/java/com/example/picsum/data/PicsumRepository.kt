@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface PicsumRepository {
 
     fun getImages(): Flow<PagingData<Image>>
+
+    suspend fun updateImage(imageId: String, isLike: Boolean)
 }

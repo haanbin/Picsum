@@ -19,4 +19,6 @@ interface ImageDao {
     @Query("DELETE FROM image")
     suspend fun deleteImages()
 
+    @Query("UPDATE image SET isLike = :isLike WHERE imageId = :imageId")
+    suspend fun updateImage(imageId: String, isLike: Boolean)
 }

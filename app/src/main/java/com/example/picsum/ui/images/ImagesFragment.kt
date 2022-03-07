@@ -28,6 +28,11 @@ class ImagesFragment : BaseFragment<FragmentImagesBinding>(R.layout.fragment_ima
         binding.vm = viewModel
         binding.rvImages.run {
             adapter = imagesAdapter
+            itemAnimator?.let { animator ->
+                if (animator is SimpleItemAnimator) {
+                    animator.supportsChangeAnimations = false
+                }
+            }
             val footerAdapter = LoadStateAdapter { imagesAdapter.retry() }
             adapter = imagesAdapter.withLoadStateFooter(
                 footer = footerAdapter

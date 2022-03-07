@@ -32,5 +32,9 @@ class PicsumRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun updateImage(imageId: String, isLike: Boolean) {
+        roomDataSource.updateImage(imageId, isLike)
+    }
 }
 
