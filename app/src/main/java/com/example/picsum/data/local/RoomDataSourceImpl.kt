@@ -36,7 +36,7 @@ class RoomDataSourceImpl @Inject constructor(
         imageRemoteKeysDao.deleteRemoteKeys()
     }
 
-    override suspend fun updateImage(imageId: String, isLike: Boolean) {
-        imageDao.updateImage(imageId, isLike)
+    override suspend fun updateImage(image: ImageEntity) {
+        imageDao.updateImage(imageId = image.imageId, image.isLike, image.grayScale, image.blur)
     }
 }

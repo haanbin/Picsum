@@ -22,5 +22,5 @@ interface RoomDataSource {
 
     suspend fun removeRemoteKeys()
 
-    suspend fun updateImage(imageId: String, isLike: Boolean)
+    suspend fun updateImage(image: ImageEntity)
 }

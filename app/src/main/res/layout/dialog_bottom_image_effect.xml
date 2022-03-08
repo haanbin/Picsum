@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.example.picsum.ui.image.dialog.ImageEffectViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/default_padding_horizontal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/default_padding_horizontal" />
+
+        <TextView
+            android:id="@+id/tv_grayscale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="@string/gray_scale"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            bind:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.onClickApply()}"
+            android:padding="10dp"
+            android:text="@string/apply"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_grayscale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@={vm.grayscaleChecked}"
+            app:layout_constraintBottom_toTopOf="@id/tv_blur"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_grayscale"
+            tools:checked="true" />
+
+        <TextView
+            android:id="@+id/tv_blur"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/blur"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/switch_grayscale" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_blur"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:value="@={vm.blur}"
+            android:valueFrom="0"
+            android:valueTo="10"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_blur" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

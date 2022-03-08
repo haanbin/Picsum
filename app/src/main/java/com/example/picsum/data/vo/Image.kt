@@ -1,6 +1,7 @@
 package com.example.picsum.data.vo
 
 import android.os.Parcelable
+import com.example.picsum.data.local.db.entity.ImageEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,14 +18,18 @@ data class Image(
     val tableId: Long
 ) : Parcelable
 
-/*fun Photo.toLikeEntity() =
-    LikeEntity(
-        photoId = id,
+fun Image.toEntity() =
+    ImageEntity(
+        imageId = id,
         author,
         downloadUrl,
         height,
         url,
         width,
         grayScale,
-        blur
-    )*/
+        blur,
+        isLike,
+        0L
+    ).apply {
+        id = tableId
+    }

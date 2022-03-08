@@ -1,4 +1,4 @@
-package com.example.picsum.ui.images
+package com.example.picsum.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType

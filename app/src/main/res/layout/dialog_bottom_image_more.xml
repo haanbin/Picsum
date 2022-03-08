@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.example.picsum.ui.image.dialog.ImageMoreBottomViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_effect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> vm.onClickEffect()}"
+            android:padding="10dp"
+            android:text="@string/effect"
+            app:drawableStartCompat="@drawable/ic_effect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_file_download"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> vm.onClickFileDownload()}"
+            android:padding="10dp"
+            android:text="@string/download"
+            app:drawableStartCompat="@drawable/ic_file_download"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_effect" />
+
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> vm.onClickShare()}"
+            android:padding="10dp"
+            android:text="@string/share"
+            app:drawableStartCompat="@drawable/ic_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_file_download" />
+
+        <TextView
+            android:id="@+id/tv_link"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> vm.onClickWebLink()}"
+            android:padding="10dp"
+            android:text="@string/link"
+            app:drawableStartCompat="@drawable/ic_link"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_share" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -54,8 +54,8 @@ class ImagesViewModel @Inject constructor(
     }
 
     fun onRefresh() {
-        _refreshVisible.value = true
         viewModelScope.launch {
+            _refreshVisible.value = true
             _refreshEvent.emit(Unit)
         }
     }
@@ -80,7 +80,7 @@ class ImagesViewModel @Inject constructor(
 
     fun updateImage(image: Image) {
         viewModelScope.launch {
-            updateImageUseCase(imageId = image.id, !image.isLike)
+            updateImageUseCase(image.copy(isLike = !image.isLike))
         }
     }
 

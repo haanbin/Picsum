@@ -8,5 +8,5 @@ interface PicsumRepository {
 
     fun getImages(): Flow<PagingData<Image>>
 
-    suspend fun updateImage(imageId: String, isLike: Boolean)
+    suspend fun updateImage(image: Image)
 }

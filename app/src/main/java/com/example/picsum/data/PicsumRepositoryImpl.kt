@@ -3,11 +3,11 @@ package com.example.picsum.data
 import androidx.paging.*
 import com.example.picsum.data.local.RoomDataSource
 import com.example.picsum.data.local.db.entity.toVo
-import com.example.picsum.data.paging.ImagesPagingSource
+import com.example.picsum.data.paging.ImageRemoteMediator
 import com.example.picsum.data.paging.ImagesPagingSource.Companion.LIMIT_DEFAULT
 import com.example.picsum.data.remote.PicsumDataSource
 import com.example.picsum.data.vo.Image
-import com.example.picsum.ui.images.ImageRemoteMediator
+import com.example.picsum.data.vo.toEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -33,8 +33,8 @@ class PicsumRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateImage(imageId: String, isLike: Boolean) {
-        roomDataSource.updateImage(imageId, isLike)
+    override suspend fun updateImage(image: Image) {
+        roomDataSource.updateImage(image.toEntity())
     }
 }
 

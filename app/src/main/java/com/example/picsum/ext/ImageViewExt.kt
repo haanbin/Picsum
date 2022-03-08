@@ -18,7 +18,10 @@ fun ImageView.loadImage(image: Image?) {
     image?.let {
         val deviceWidth = (context.resources.displayMetrics.widthPixels)
         val size = (deviceWidth) / 4
-        val imageUrl = (BuildConfig.SERVER_URL + "id/" + image.id + "/$size/$size")
+        val imageUrl = (BuildConfig.SERVER_URL + "id/" + image.id + "/$size/$size").formatPhotoUrl(
+            image.grayScale,
+            image.blur
+        )
         Glide.with(this).load(imageUrl)
             .apply(
                 RequestOptions().placeholder(R.drawable.ic_no_image)

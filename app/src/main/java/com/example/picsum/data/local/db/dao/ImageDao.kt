@@ -1,11 +1,9 @@
 package com.example.picsum.data.local.db.dao
 
 import androidx.paging.PagingSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.picsum.data.local.db.entity.ImageEntity
+import com.example.picsum.data.vo.Image
 
 @Dao
 interface ImageDao {
@@ -19,6 +17,6 @@ interface ImageDao {
     @Query("DELETE FROM image")
     suspend fun deleteImages()
 
-    @Query("UPDATE image SET isLike = :isLike WHERE imageId = :imageId")
-    suspend fun updateImage(imageId: String, isLike: Boolean)
+    @Query("UPDATE image SET isLike = :isLike, grayScale = :grayScale, blur = :blur WHERE imageId = :imageId")
+    suspend fun updateImage(imageId: String, isLike: Boolean, grayScale: Boolean, blur: Int)
 }
